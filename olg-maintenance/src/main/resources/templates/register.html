@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <title>Hello World!</title>
-</head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"><head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/loginpage.css">
+    <title>Register</title>
 <body>
-<p th:text="'Hello, ' + ${name} + '!'" />
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2>Register</h2>
+        <p>Register from here to access.</p>
+        <p th:text="${param.uid}"/>
+    </div>
+</div>
+<div class="main">
+    <div id="main-text" class="col-md-6 col-sm-12">
+        <div class="login-form">
+            <form th:object="${formuser}" style="display: inline;" onsubmit="return validateForm(this.submitted)" th:action="@{/register}" method="post" name="registerForm">
+                <div class="form-group" style="display: flex;">
+                    <input th:field="*{password}" type="password" required class="form-control" name="password" placeholder="Create Password" style="margin-right: 15px;" >
+                    <input type="password" required class="form-control" name="confirm password" placeholder="Confirm Password">
+                    <input type="hidden" th:value="${param.uid}" id="uid" name="uid">
+                </div>
+                <div class="form-group" style="display: flex;">
+                    <input th:field="*{firstName}" required type="text" class="form-control" name="firstName" placeholder="First Name" style="margin-right: 15px;">
+                    <input th:field="*{lastName}" required type="text" class="form-control" name="lastName" placeholder="Last Name">
+                </div>
+                <div class="form-group" style="display: flex;">
+                    <input type="tel" th:field="*{phone}" required class="form-control" name="phone" maxlength="12" placeholder="Cell" style="width: 48%">
+                </div>
+                <button type="submit" class="btn btn-black btn-login">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript">
+function validateForm(source) {
+  let fname = document.forms["registerForm"]["firstname"].value;
+  let lname = document.forms["registerForm"]["lastname"].value;
+  let phone = document.forms["registerForm"]["phone"].value;
+  if (fname == "" || lname == "" || phone == "") {
+    alert("Please fill out all required fields.");
+    return false;
+  }
+  let password = document.forms["registerForm"]["password"].value;
+}
+</script>
+
 </body>
 </html>

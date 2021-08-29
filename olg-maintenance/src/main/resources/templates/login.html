@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/loginpage.css"/>
@@ -10,7 +9,7 @@
 <div class="sidenav">
     <div class="login-main-text">
         <h2>Login Page</h2>
-        <p>Login or register from here to access.</p>
+        <p>Login from here to access.</p>
     </div>
 </div>
 <div class="main">
@@ -33,10 +32,7 @@
                 <div th:if="${param.error}" style="margin-bottom: 20px; color:red;">
                     Invalid username and password.
                 </div>
-                <button type="submit" onsubmit="this.form.submitted='login-submit'" class="btn btn-black btn-login">Login</button>
-            </form>
-            <form action="/register" style="display: inline;">
-                <button class="btn btn-secondary btn-register">Register</button>
+                <button type="submit" class="btn btn-black btn-login">Login</button>
             </form>
         </div>
     </div>
@@ -47,13 +43,9 @@
 <script type="text/javascript">
 function validateForm(source) {
   let OLGUser = document.forms["loginForm"]["username"].value;
-  if (OLGUser == "") {
-    alert("Username is required");
-    return false;
-  }
   let pass = document.forms["loginForm"]["password"].value;
-  if (pass == "") {
-    alert("Password is required");
+  if (OLGUser == "" || pass == "") {
+    alert("Please fill out all required fields.");
     return false;
   }
 }

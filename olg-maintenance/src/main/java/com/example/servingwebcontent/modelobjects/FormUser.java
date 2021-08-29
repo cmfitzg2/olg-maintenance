@@ -1,21 +1,11 @@
-package com.example.servingwebcontent.users;
+package com.example.servingwebcontent.modelobjects;
 
-public class OLGUser {
+public class FormUser {
     String uid;
     String firstName;
     String lastName;
     String phone;
-    String email;
-    String group;
-
-    public OLGUser(String uid, String firstName, String lastName, String phone, String email, String group) {
-        this.uid = uid;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.group = group;
-    }
+    String password;
 
     public String getUid() {
         return uid;
@@ -49,19 +39,11 @@ public class OLGUser {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

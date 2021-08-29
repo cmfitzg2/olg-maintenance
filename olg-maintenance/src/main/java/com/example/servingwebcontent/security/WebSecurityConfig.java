@@ -13,6 +13,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
@@ -35,9 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
 		List<UserDetails> userDetailsList = new ArrayList<>();
-		userDetailsList.add(User.withDefaultPasswordEncoder().username("admin").password("admin")
+		userDetailsList.add(User
+				.withUsername("admin")
+				.password("{noop}admin")
 				.roles(UserManager.ADMIN).build());
-		UserManager.OLGUsers.add(new OLGUser("admin", "admin", "8283030577", "admin", UserManager.ADMIN));
+		final String uid = UUID.randomUUID().toString();
+		UserManager.OLGUsers.add(new OLGUser(uid, "admin", "admin", "8283030577", "admin", UserManager.ADMIN));
 		return new InMemoryUserDetailsManager(userDetailsList);
 	}
 }
