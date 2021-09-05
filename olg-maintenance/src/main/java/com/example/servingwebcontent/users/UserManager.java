@@ -26,4 +26,18 @@ public class UserManager {
         }
         return null;
     }
+
+    public static void setUserByUid(String uid, OLGUser user) {
+        for (int i = 0; i < OLGUsers.size(); i++) {
+            if (OLGUsers.get(i).getUid().equals(uid)) {
+                OLGUsers.set(i, user);
+                return;
+            }
+        }
+        System.out.println("DIDN'T FIND TICKET BY UID " + uid);
+    }
+
+    public static void removeUserByUid(String uid) {
+        OLGUsers.removeIf(user -> user.getUid().equals(uid));
+    }
 }

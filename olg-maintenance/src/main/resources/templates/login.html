@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/loginpage.css"/>
-    <title>Spring Security Example </title>
+    <title>Login</title>
 </head>
 <body>
 <div class="sidenav">
@@ -20,7 +20,7 @@
                     You have been logged out.
                 </div>
                 <div class="form-group">
-                    <label>Username
+                    <label>Email
                         <input required class="form-control" name="username" placeholder="Username"/>
                     </label>
                 </div>
@@ -30,7 +30,7 @@
                     </label>
                 </div>
                 <div th:if="${param.error}" style="margin-bottom: 20px; color:red;">
-                    Invalid username and password.
+                    Invalid email and password.
                 </div>
                 <button type="submit" class="btn btn-black btn-login">Login</button>
             </form>

@@ -6,6 +6,7 @@ public class FormUser {
     String lastName;
     String phone;
     String password;
+    String confirmPassword;
 
     public String getUid() {
         return uid;
@@ -45,5 +46,13 @@ public class FormUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/custom.min.css"/>
     <title>Dashboard</title>
 </head>
-<body>
+<body style="padding-bottom: 150px;">
 <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
     <div class="container">
         <a href="/" class="navbar-brand">OLG Maintenance</a>
@@ -25,45 +25,170 @@
                 <li class="nav-item btn">
                     <a rel="noopener" class="nav-link input-nav" href="/ticket-submit">Submit Request</a>
                 </li>
+                <li class="nav-item btn">
+                    <a rel="noopener" class="nav-link input-nav" th:href="@{/view-user?uid={uid}(uid=${userUid})}">Profile</a>
+                </li>
             </ul>
         </div>
     </div>
 </div>
 <div class="container">
     <div th:if="${#request.isUserInRole('ADMIN')}" class="row">
-        <h2>User Management</h2>
-        <h5 style="margin-top: 20px; margin-bottom: 20px;">Create User</h5>
+    <h3>User Management</h3>
+    <p th:text="${userEmail}"></p>
+        <h5 style="margin-top: 20px; margin-bottom: 20px;">Create user</h5>
+        <div th:if="${param.error}" style="margin-bottom: 20px; color:red;">
+            Error processing user, check formatting.
+        </div>
+        <div th:if="${param.ticketError}" style="margin-bottom: 20px; color:red;">
+            Error submitting ticket, check formatting.
+        </div>
+        <div th:if="${param.ticketSuccess}" style="margin-bottom: 20px; color:green;">
+            Ticket successfully submitted.
+        </div>
+        <div th:if="${param.userSuccess}" style="margin-bottom: 20px; color:green;">
+            User successfully updated.
+        </div>
         <form th:object="${adduser}" th:action="@{/dashboard}" style="display: flex;" method="post">
             <input th:field="*{email}" style="background-color: #fff; width: 20%; margin-right: 5px;" required class="form-control" name="email" placeholder="User's Email"/>
             <input type="submit" value="Add User" class="btn btn-primary"/>
-            <div th:if="${param.error}" style="margin-bottom: 20px; color:red;">
-                Error creating user, check formatting.
-            </div>
         </form>
-        <table class="table table-striped table-dark" style="margin-top: 50px;">
-            <thead>
-            <tr>
-                <th scope="col">UID</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block th:each="user : ${users}">
+        <div class="container">
+            <table class="table table-striped table-dark" style="margin-top: 50px;">
+                <thead>
                 <tr>
-                    <td>
-                        <a th:href="@{/register?uid={uid}(uid=${user.uid})}" th:text="${user.uid}"></a>
-                    </td>
-                    <td th:text="${user.firstName}"></td>
-                    <td th:text="${user.lastName}"></td>
-                    <td th:text="${user.phone}"></td>
-                    <td th:text="${user.email}"></td>
+                    <th scope="col">UID</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Email</th>
                 </tr>
-            </th:block>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <th:block th:each="user : ${users}">
+                    <tr>
+                        <td>
+                            <a th:if="${user.firstName != ''}" th:href="@{/view-user?uid={uid}(uid=${user.uid})}" th:text="${user.uid}"></a>
+                            <a th:if="${user.firstName == ''}" th:href="@{/register?uid={uid}(uid=${user.uid})}" th:text="${user.uid}"></a>
+                        </td>
+                        <td th:text="${user.firstName}"></td>
+                        <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.phone}"></td>
+                        <td th:text="${user.email}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <h3 style="margin-top: 40px;">Ticket Management</h3>
+        <h5 style="margin-top: 20px; margin-bottom: 20px;">My open tickets</h5>
+        <div class="container">
+            <table class="table table-striped table-dark">
+                <colgroup>
+                    <col style="width:13%">
+                    <col style="width:48%">
+                    <col style="width:13%">
+                    <col style="width:13%">
+                    <col style="width:13%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Assigned To</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="ticket : ${tickets}">
+                    <tr th:if="${ticket.assignedTo == #httpServletRequest.remoteUser}">
+                        <td>
+                            <a th:href="@{/view-ticket?uid={uid}(uid=${ticket.uid})}" th:text="${ticket.title}"></a>
+                        </td>
+                        <td th:text="${ticket.description}"></td>
+                        <td th:text="${ticket.priority}"></td>
+                        <td th:text="${ticket.assignedTo}"></td>
+                        <td th:text="${ticket.status}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <h5 style="margin-top: 20px; margin-bottom: 20px;">Submitted by me</h5>
+        <div class="container">
+            <table class="table table-striped table-dark">
+                <colgroup>
+                    <col style="width:13%">
+                    <col style="width:48%">
+                    <col style="width:13%">
+                    <col style="width:13%">
+                    <col style="width:13%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Assigned To</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="ticket : ${tickets}">
+                    <tr th:if="${ticket.submittedBy == #httpServletRequest.remoteUser}">
+                        <td>
+                            <a th:href="@{/view-ticket?uid={uid}(uid=${ticket.uid})}" th:text="${ticket.title}"></a>
+                        </td>
+                        <td th:text="${ticket.description}"></td>
+                        <td th:text="${ticket.priority}"></td>
+                        <td th:text="${ticket.assignedTo}"></td>
+                        <td th:text="${ticket.status}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div th:if="${#request.isUserInRole('ADMIN')}" class="row">
+        <h5 style="margin-top: 20px; margin-bottom: 20px;">All tickets</h5>
+        <div class="container">
+            <table class="table table-striped table-dark">
+                <colgroup>
+                    <col style="width:13%">
+                    <col style="width:48%">
+                    <col style="width:13%">
+                    <col style="width:13%">
+                    <col style="width:13%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Assigned To</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="ticket : ${tickets}">
+                    <tr>
+                        <td>
+                            <a th:href="@{/view-ticket?uid={uid}(uid=${ticket.uid})}" th:text="${ticket.title}"></a>
+                        </td>
+                        <td th:text="${ticket.description}"></td>
+                        <td th:text="${ticket.priority}"></td>
+                        <td th:text="${ticket.assignedTo}"></td>
+                        <td th:text="${ticket.status}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script src="/js/bootstrap.bundle.min.js"></script>

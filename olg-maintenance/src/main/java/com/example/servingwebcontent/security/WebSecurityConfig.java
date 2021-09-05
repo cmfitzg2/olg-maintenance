@@ -39,7 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		userDetailsList.add(User
 				.withUsername("admin")
 				.password("{noop}admin")
-				.roles(UserManager.ADMIN).build());
+				.roles(UserManager.ADMIN)
+				.build());
 		final String uid = UUID.randomUUID().toString();
 		UserManager.OLGUsers.add(new OLGUser(uid, "admin", "admin", "8283030577", "admin", UserManager.ADMIN));
 		return new InMemoryUserDetailsManager(userDetailsList);

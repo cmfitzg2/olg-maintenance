@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap-darkly.css"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/prism-okaidia.css"/>
+    <link rel="stylesheet" href="/css/custom.min.css"/>
+    <title>Delete User</title>
+</head>
+<body style="padding-bottom: 150px;">
+<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+    <div class="container">
+        <a href="/" class="navbar-brand">OLG Maintenance</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-md-auto" style="align-items: flex-start;">
+                <li class="nav-item btn">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Log Out" class="nav-link input-nav"/>
+                    </form>
+                </li>
+                <li class="nav-item btn">
+                    <a rel="noopener" class="nav-link input-nav" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item btn">
+                    <a rel="noopener" class="nav-link input-nav" th:href="@{/view-user?uid={uid}(uid=${userUid})}">Profile</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <h2>Confirm Delete User</h2>
+        <div class="container">
+            <a href="/dashboard" class="btn btn-primary">Back</a>
+        </div>
+        <form th:if="${#request.isUserInRole('ADMIN')}"
+              style="margin-top: 20px;" th:object="${formuser}" th:action="@{/delete-user}" method="post">
+            <h5>Enter your password to confirm</h5>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input minlength="5" th:value="*{password}" type="password" style="background-color: #fff; width: 50%" required class="form-control" id="password" name="password">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input minlength="5" th:field="*{confirmPassword}" type="password" style="background-color: #fff; width: 50%" required class="form-control" id="confirmPassword" name="confirmPassword">
+            </div>
+            <div class="form-group">
+                <input type="hidden" th:value="${param.uid}" id="uid" name="uid">
+                <input type="submit" value="Delete User" class="btn btn-lg btn-danger"/>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/prism.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -8,16 +8,17 @@
     <div class="login-main-text">
         <h2>Register</h2>
         <p>Register from here to access.</p>
-        <p th:text="${param.uid}"/>
     </div>
 </div>
 <div class="main">
     <div id="main-text" class="col-md-6 col-sm-12">
         <div class="login-form">
             <form th:object="${formuser}" style="display: inline;" onsubmit="return validateForm(this.submitted)" th:action="@{/register}" method="post" name="registerForm">
+                <p th:if="${param.error}" style="color: red;">There was an error registering, please check formatting</p>
+                <span id='passwordMessage'></span>
                 <div class="form-group" style="display: flex;">
-                    <input th:field="*{password}" type="password" required class="form-control" name="password" placeholder="Create Password" style="margin-right: 15px;" >
-                    <input type="password" required class="form-control" name="confirm password" placeholder="Confirm Password">
+                    <input minlength="5" th:field="*{password}" id="password" type="password" required class="form-control" name="password" placeholder="Create Password" style="margin-right: 15px;">
+                    <input minlength="5" th:field="*{confirmPassword}" onkeyup='check();' id="confirmPassword" type="password" required class="form-control" name="confirmPassword" placeholder="Confirm Password">
                     <input type="hidden" th:value="${param.uid}" id="uid" name="uid">
                 </div>
                 <div class="form-group" style="display: flex;">
@@ -45,6 +46,20 @@ function validateForm(source) {
     return false;
   }
   let password = document.forms["registerForm"]["password"].value;
+  let confirmPassword = document.forms["loginForm"]["confirmPassword"].value;
+  if (password != confirmPassword) {
+    alert("Passwords do not match");
+    return false;
+  }
+}
+var check = function() {
+  if (document.getElementById('password').value ==
+    document.getElementById('confirmPassword').value) {
+        document.getElementById('passwordMessage').innerHTML = '';
+  } else {
+    document.getElementById('passwordMessage').style.color = 'red';
+    document.getElementById('passwordMessage').innerHTML = 'Passwords do not match';
+  }
 }
 </script>
 
