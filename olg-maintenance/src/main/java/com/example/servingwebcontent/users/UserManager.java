@@ -34,7 +34,7 @@ public class UserManager {
                 return;
             }
         }
-        System.out.println("DIDN'T FIND TICKET BY UID " + uid);
+        System.out.println("DIDN'T FIND USER BY UID " + uid);
     }
 
     public static void removeUserByUid(String uid) {
