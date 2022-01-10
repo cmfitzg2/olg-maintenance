@@ -1,3 +1,9 @@
 This is a test project I implemented to begin learning the Spring framework. Utilizes in-memory user management, and was intended to be a system for creating and maintaining maintenance tickets for a small facility.
 
 This is in no way optimized, and there are many things I would've changed if I knew them at the time.
+
+### Launch locally
+To launch the Tomcat server locally:
+`mvn spring-boot:run`
+
+The application will be available at http://localhost:8080 by default after install finishes.
