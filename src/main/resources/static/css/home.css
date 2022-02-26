@@ -3,11 +3,11 @@ body {
   height: 100%;
   background-color: #333;
   background-image: url("/img/olg-church-dark.png");
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-size:cover;
-    background-attachment: fixed;
-    color:white;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size:cover;
+  background-attachment: fixed;
+  color:white;
 }
 
 body {
