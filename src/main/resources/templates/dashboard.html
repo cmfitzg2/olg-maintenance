@@ -57,24 +57,22 @@
             <table class="table table-striped table-dark" style="margin-top: 50px;">
                 <thead>
                 <tr>
-                    <th scope="col">UID</th>
+                    <th scope="col">Email</th>
                     <th scope="col">First</th>
                     <th scope="col">Last</th>
                     <th scope="col">Phone</th>
-                    <th scope="col">Email</th>
                 </tr>
                 </thead>
                 <tbody>
                 <th:block th:each="user : ${users}">
                     <tr>
                         <td>
-                            <a th:if="${user.firstName != ''}" th:href="@{/view-user?uid={uid}(uid=${user.uid})}" th:text="${user.uid}"></a>
-                            <a th:if="${user.firstName == ''}" th:href="@{/register?uid={uid}(uid=${user.uid})}" th:text="${user.uid}"></a>
+                            <a th:if="${user.firstName != ''}" th:href="@{/view-user?uid={uid}(uid=${user.uid})}" th:text="${user.email}"></a>
+                            <a th:if="${user.firstName == ''}" th:href="@{/register?uid={uid}(uid=${user.uid})}" th:text="${user.email}"></a>
                         </td>
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
                         <td th:text="${user.phone}"></td>
-                        <td th:text="${user.email}"></td>
                     </tr>
                 </th:block>
                 </tbody>

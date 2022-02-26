@@ -4,6 +4,8 @@ This is a test project I implemented to begin learning the Spring framework. Uti
 This is in no way optimized, and there are many things I would've changed if I knew them at the time.
 
 ### Launch locally
+Build the project
+`mvn clean install`
 To launch the Tomcat server locally:
 `mvn spring-boot:run`
 
