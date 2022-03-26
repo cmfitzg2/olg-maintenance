@@ -81,9 +81,18 @@ public class HelloController {
 
     @GetMapping("/dashboard")
     public void getDashboard(Model model, HttpServletRequest request) {
+        TicketManager.updateTicketCounts();
+        model.addAttribute("todoCount", TicketManager.TO_DO_COUNT);
+        model.addAttribute("inProgressCount", TicketManager.IN_PROGRESS_COUNT);
+        model.addAttribute("verifyingCount", TicketManager.VERIFYING_COUNT);
+        model.addAttribute("doneCount", TicketManager.DONE_COUNT);
         model.addAttribute("adduser", new AddUser());
         model.addAttribute("users", UserManager.OLGUsers);
         model.addAttribute("tickets", TicketManager.tickets);
+        model.addAttribute("todoTickets", TicketManager.getTicketsByStatus(TicketManager.STATUS_TO_DO));
+        model.addAttribute("inProgressTickets", TicketManager.getTicketsByStatus(TicketManager.STATUS_IN_PROGRESS));
+        model.addAttribute("verifyingTickets", TicketManager.getTicketsByStatus(TicketManager.STATUS_VERIFYING));
+        model.addAttribute("doneTickets", TicketManager.getTicketsByStatus(TicketManager.STATUS_DONE));
         OLGUser user = UserManager.getUserByEmail(request.getRemoteUser());
         if (null != user) {
             model.addAttribute("userUid", user.getUid());
@@ -111,9 +120,10 @@ public class HelloController {
         model.addAttribute("newTicket", new Ticket());
         Ticket ticket = new Ticket();
         ticket.setUid(UUID.randomUUID().toString());
+        ticket.setNumber(TicketManager.currentTicketNumber++);
         ticket.setAssignedTo(assignedTo);
         ticket.setSubmittedBy(submittedBy);
-        ticket.setStatus(TicketManager.STATUS_READY);
+        ticket.setStatus(TicketManager.STATUS_TO_DO);
         ticket.setPriority(priority);
         ticket.setTitle(title);
         ticket.setDescription(description);

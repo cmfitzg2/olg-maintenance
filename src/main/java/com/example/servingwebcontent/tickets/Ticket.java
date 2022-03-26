@@ -2,6 +2,7 @@ package com.example.servingwebcontent.tickets;
 
 public class Ticket {
     public String uid;
+    public int number;
     public String assignedTo;
     public String submittedBy;
     public String status;
@@ -15,6 +16,14 @@ public class Ticket {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getAssignedTo() {

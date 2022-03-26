@@ -40,6 +40,15 @@
         </div>
         <form style="margin-top: 20px;" th:object="${newTicket}" th:action="@{/view-ticket}" method="post">
             <div class="form-group">
+                <label for="status">Status</label>
+                <select th:value="${ticketStatus}" style="background-color: #fff; width: 50%" class="form-control" id="status" name="status">
+                    <option th:selected="${ticketStatus == 'To Do'}" value="To Do">To Do</option>
+                    <option th:selected="${ticketStatus == 'In Progress'}" value="In Progress">In Progress</option>
+                    <option th:selected="${ticketStatus == 'Verifying'}" value="Verifying">Verifying</option>
+                    <option th:selected="${ticketStatus == 'Done'}" value="Done">Done</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="title">Ticket Title</label>
                 <input th:value="${ticketTitle}" style="background-color: #fff; width: 50%" required type="text" class="form-control" id="title" name="title">
             </div>
@@ -47,14 +56,6 @@
                 <label for="description">Description</label>
                 <textarea th:value="${ticketDescription}" th:text="${ticketDescription}" style="background-color: #fff; width: 50%" required class="form-control" id="description" name="description" rows="3"></textarea>
                 <input type="hidden" th:value="${ticketUid}" id="uid" name="uid">
-            </div>
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select th:value="${ticketStatus}" style="background-color: #fff; width: 50%" class="form-control" id="status" name="status">
-                    <option th:selected="${ticketStatus == 'Ready'}" value="Ready">Ready</option>
-                    <option th:selected="${ticketStatus == 'In Progress'}" value="In Progress">In Progress</option>
-                    <option th:selected="${ticketStatus == 'Done'}" value="Done">Done</option>
-                </select>
             </div>
             <div th:if="${#request.isUserInRole('ADMIN')}" class="form-group">
                 <label for="priority">Priority</label>
@@ -68,7 +69,7 @@
                 <label for="assignedTo">Assigned To</label>
                 <select th:value="${ticketAssignedTo}" style="background-color: #fff; width: 50%" class="form-control" id="assignedTo" name="assignedTo">
                     <th:block th:each="user : ${users}">
-                        <option th:value="${user.email}" th:text="${user.email}"></option>
+                        <option th:selected="${ticketAssignedTo == user.email}" th:value="${user.email}" th:text="${user.email}"></option>
                     </th:block>
                 </select>
             </div>
