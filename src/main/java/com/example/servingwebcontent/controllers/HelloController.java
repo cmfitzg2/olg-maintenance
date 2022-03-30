@@ -3,10 +3,12 @@ package com.example.servingwebcontent.controllers;
 import com.example.servingwebcontent.modelobjects.AddUser;
 import com.example.servingwebcontent.modelobjects.ChangePassword;
 import com.example.servingwebcontent.modelobjects.FormUser;
+import com.example.servingwebcontent.smtp.SendMail;
 import com.example.servingwebcontent.tickets.Ticket;
 import com.example.servingwebcontent.tickets.TicketManager;
 import com.example.servingwebcontent.users.OLGUser;
 import com.example.servingwebcontent.users.UserManager;
+import com.example.servingwebcontent.utils.Constants;
 import com.example.servingwebcontent.utils.GeneralUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -127,6 +129,11 @@ public class HelloController {
         ticket.setPriority(priority);
         ticket.setTitle(title);
         ticket.setDescription(description);
+        if (!submittedBy.equals(assignedTo)) {
+            SendMail.sendEmail(assignedTo, "New Maintenance Request",
+                    "A new maintenance request has been created and assigned to you.\n\n"
+                            + Constants.domain + "/view-ticket?uid=" + ticket.getUid());
+        }
         TicketManager.tickets.add(ticket);
 
         return "redirect:dashboard?ticketSuccess";
@@ -160,6 +167,7 @@ public class HelloController {
     @PostMapping("/view-ticket")
     public String postViewTicket(
             Model model,
+            HttpServletRequest request,
             @RequestParam(value = "assignedTo", required = false) String assignedTo,
             @RequestParam(value = "priority", required = false) String priority,
             @RequestParam("status") String status,
@@ -169,6 +177,19 @@ public class HelloController {
         model.addAttribute("newTicket", new Ticket());
         Ticket ticket = TicketManager.getTicketByUid(uid);
         if (null != ticket) {
+            if (!assignedTo.equals(ticket.getAssignedTo())) {
+                //run this in a new thread to avoid long processing times for user
+                SendMail.sendEmail(assignedTo, "New Maintenance Request",
+                        "A new maintenance request has been created and assigned to you.\n\n"
+                                + Constants.domain + "/view-ticket?uid=" + ticket.getUid());
+            } else {
+                if (!priority.equals(ticket.getPriority()) || !title.equals(ticket.getTitle())
+                        || !description.equals(ticket.getDescription())) {
+                    SendMail.sendEmail(assignedTo, "Maintenance Request Updated",
+                            "An existing maintenance request assigned to you has been updated\n\n"
+                                    + Constants.domain + "/view-ticket?uid=" + ticket.getUid());
+                }
+            }
             if (GeneralUtils.isNotEmpty(assignedTo)) {
                 ticket.setAssignedTo(assignedTo);
             }
@@ -266,7 +287,7 @@ public class HelloController {
 
     @GetMapping("/delete-user")
     public void getDeleteUser(Model model,
-                                @RequestParam("uid") String uid) {
+                              @RequestParam("uid") String uid) {
         model.addAttribute("uid", uid);
         model.addAttribute("userUid", uid);
         model.addAttribute("formuser", new FormUser());
@@ -305,7 +326,7 @@ public class HelloController {
 
     @GetMapping("/change-password")
     public void getChangePassword(Model model,
-                              @RequestParam("uid") String uid) {
+                                  @RequestParam("uid") String uid) {
         model.addAttribute("uid", uid);
         model.addAttribute("userUid", uid);
         OLGUser user = UserManager.getUserByUid(uid);
@@ -317,10 +338,10 @@ public class HelloController {
 
     @PostMapping("/change-password")
     public String postChangePassword(Model model,
-                                 @RequestParam("uid") String uid,
-                                 @RequestParam("password") String password,
-                                 @RequestParam("newPassword") String newPassword,
-                                 @RequestParam("confirmPassword") String confirmPassword) {
+                                     @RequestParam("uid") String uid,
+                                     @RequestParam("password") String password,
+                                     @RequestParam("newPassword") String newPassword,
+                                     @RequestParam("confirmPassword") String confirmPassword) {
         model.addAttribute("changepassword", new ChangePassword());
         if (newPassword.equals(confirmPassword)
                 && (password.equals(inMemoryUserDetailsManager.loadUserByUsername("admin").getPassword())
