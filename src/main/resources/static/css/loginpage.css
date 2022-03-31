@@ -18,6 +18,14 @@ body {
     padding: 0px 10px;
 }
 
+.form-group {
+    display: flex;
+}
+
+.cellphone-input {
+    width: 48%;
+}
+
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
 }
@@ -32,7 +40,7 @@ body {
     }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 767px){
     .main{
         margin-top: 15px;
         margin-bottom: 15px;
@@ -48,6 +56,19 @@ body {
     #main-text {
         justify-content: center!important;
         display: flex!important;
+    }
+    .register-back {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1147px){
+    .form-group {
+        display: block;
+    }
+
+    .cellphone-input {
+        width: 100%;
     }
 }
 
@@ -95,4 +116,9 @@ body {
 
 .btn-register{
     margin-left: 10px;
+}
+
+.register-back{
+    padding-left: 60px;
+    padding-top: 20px;
 }
